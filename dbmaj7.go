@@ -13,13 +13,15 @@ func main() {
 	articleRepository := repository.Articles{}
 	apiService := api.NewService(&articleRepository)
 	apiController := api.NewController(&apiService)
-	http.HandleFunc("/api/articles/this-is-such-an-awesome-article", apiController.ArticleShow)
+	http.HandleFunc("/api/articles/", apiController.ArticleShow)
+	http.HandleFunc("/api/articles", apiController.ArticleIndex)
 	http.HandleFunc("/static/", staticHandler)
 	http.HandleFunc("/", indexHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
+	// if (r.URL.path)
 	fmt.Println("appIndex, path: ", r.URL.Path)
 	http.ServeFile(w, r, "./static/dist/dbmaj7.html")
 }

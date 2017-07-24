@@ -17,8 +17,15 @@ func NewService(articles *repository.Articles) Service {
 	}
 }
 
-// GetArticleBySlug delgates query request to the repository, and
-// formats response if needed
+// GetArticleBySlug delgates query request to the repository - placeholder
+// for additional business logic
 func (s *Service) GetArticleBySlug(slug string) (*domain.Article, error) {
 	return s.Articles.GetArticleBySlug(slug)
+}
+
+// GetArticleSummaries delgates query request to the repository - placeholder
+// for additional business logic
+func (s *Service) GetArticleSummaries() ([]*domain.Article, error) {
+	// TODO sort them here
+	return s.Articles.GetArticleSummaries()
 }

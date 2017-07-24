@@ -11,5 +11,6 @@ type Article struct {
 	IsPublished     bool               `json:"isPublished"`
 	PublicationDate time.Time          `json:"publicationDate"`
 	Slug            string             `json:"slug"`
+	Summary         string             `json:"summary"`
 	Title           string             `json:"title"`
 }

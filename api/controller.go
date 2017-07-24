@@ -25,12 +25,24 @@ func NewController(service *Service) *Controller {
 
 // ArticleShow returns a single article (identified by slug)
 func (c *Controller) ArticleShow(w http.ResponseWriter, r *http.Request) {
-	gs, _ := c.Service.GetArticleBySlug("this-is-such-an-awesome-article")
-	if js, err := json.Marshal(gs); err == nil {
+	fmt.Println("path", r.URL.Path)
+	slug := r.URL.Path[len("/api/articles/"):]
+	fmt.Println("slug: ", slug)
+	article, _ := c.Service.GetArticleBySlug(slug)
+	if js, err := json.Marshal(article); err == nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
 	} else {
 		fmt.Println(err)
+	}
+}
 
+func (c *Controller) ArticleIndex(w http.ResponseWriter, r *http.Request) {
+	articles, _ := c.Service.GetArticleSummaries()
+	if js, err := json.Marshal(articles); err == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+	} else {
+		fmt.Println(err)
 	}
 }
