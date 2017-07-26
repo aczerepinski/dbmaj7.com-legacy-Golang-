@@ -6,11 +6,14 @@ import {
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 
+import Navbar from './shared/navbar/navbar'
+
 import ArticleIndexPage from './pages/articles/articleIndexPage'
 import ArticleShowPage from './pages/articles/articleShowPage'
 
 const App = () => (
   <div>
+    <Navbar/>
     <Route exact path="/articles" component={ArticleIndexPage}/>
     <Route path="/articles/:slug" component={ArticleShowPage}/>
   </div>
