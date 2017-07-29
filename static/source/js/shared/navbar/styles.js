@@ -29,3 +29,16 @@ export const BrandLogo = styled.div`
     text-decoration: none;
   }
 `
+
+export const NavLinks = styled.div`
+  align-items: center;
+  display: flex;
+  flex-basis: 66%;
+  font-family: ${fonts.fira};
+  justify-content: space-around;
+    a {
+    color: #fff;
+    font-family: ${fonts.fira};
+    text-decoration: none;
+  }
+`

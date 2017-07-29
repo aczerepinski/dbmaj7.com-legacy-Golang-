@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"time"
+
 	"github.com/aczerepinski/dbmaj7/domain"
 )
 
@@ -18,10 +20,13 @@ func (a *Articles) GetArticleSummaries() ([]*domain.Article, error) {
 }
 
 func (a *Articles) GetArticleBySlug(slug string) (*domain.Article, error) {
+	pubDate, _ := time.Parse("Jan 2, 2006", "Jan 29, 2017")
 	article := domain.Article{
 		Author: domain.Author{
 			FirstName: "Adam",
 			LastName:  "Czerepinski",
+			PhotoURL:  "https://www.gravatar.com/avatar/acd5a68afdf05b06e4286d39d502083b?s=100",
+			Website:   "http://www.adamcz.com",
 		},
 		Body: []domain.ArticleComponent{
 			domain.ArticleComponent{
@@ -46,9 +51,10 @@ func (a *Articles) GetArticleBySlug(slug string) (*domain.Article, error) {
 				},
 			},
 		},
-		IsPublished: false,
-		Slug:        "three-weird-tricks-to-reharmonize-a-twelve-bar-blues",
-		Title:       "Three Weird Tricks to Reharmonize a 12 Bar Blues",
+		IsPublished:     false,
+		PublicationDate: pubDate,
+		Slug:            "three-weird-tricks-to-reharmonize-a-twelve-bar-blues",
+		Title:           "Three Weird Tricks to Reharmonize a 12 Bar Blues",
 	}
 	return &article, nil
 }

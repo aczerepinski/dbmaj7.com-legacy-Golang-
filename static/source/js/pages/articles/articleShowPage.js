@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import API from '../../lib/api'
+import { PageLayout, PageTitle } from '../../shared/pageLayout'
+import ArticleMeta from './articleMeta'
+import ArticleParagraph from './articleParagraph'
 
 class ArticleShowPage extends Component {
   constructor(props) {
@@ -40,10 +43,11 @@ class ArticleShowPage extends Component {
   renderArticle() {
     const a = this.state.article
     return (
-      <div>
-        <h1>{a.title}</h1>
+      <PageLayout>
+        <PageTitle>{a.title}</PageTitle>
+        <ArticleMeta {...this.state.article}/>
         {a.body.map((component) => this.componentDispatcher(component))}
-      </div>
+      </PageLayout>
 
     )
   }
@@ -59,10 +63,6 @@ class ArticleShowPage extends Component {
   }
 }
 
-const ArticleParagraph = (props) => (
-  <div>
-    {props.body}
-  </div>
-)
+
 
 export default ArticleShowPage
