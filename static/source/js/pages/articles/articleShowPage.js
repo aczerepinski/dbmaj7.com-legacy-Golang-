@@ -3,6 +3,7 @@ import API from '../../lib/api'
 import { PageLayout, PageTitle } from '../../shared/pageLayout'
 import ArticleMeta from './articleMeta'
 import ArticleParagraph from './articleParagraph'
+import ReharmWidget from './reharmWidget'
 
 class ArticleShowPage extends Component {
   constructor(props) {
@@ -36,7 +37,10 @@ class ArticleShowPage extends Component {
 
   componentDispatcher(component) {
     if (component.templateName === 'articleParagraph') {
-      return <ArticleParagraph {...component} />
+      return <ArticleParagraph {...component} key={component.order}/>
+    }
+    if (component.templateName === 'reharmWidget') {
+      return <ReharmWidget {...component} key={component.order}/>
     }
   }
 

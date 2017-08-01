@@ -31,24 +31,46 @@ func (a *Articles) GetArticleBySlug(slug string) (*domain.Article, error) {
 		Body: []domain.ArticleComponent{
 			domain.ArticleComponent{
 				Body:         "If you aren't familiar with reharmonization, it essentially means to replace some of the chords in a song. Typically this is done without requiring any changes to the original melody, although small chromatic adjustments aren't unheard of.",
+				Order:        1,
 				TemplateName: "articleParagraph",
 			},
 			domain.ArticleComponent{
 				Body:         "The 12 bar blues is a particularly good vehicle for exploring reharmonization techniques because it's a universally known song form, and reasonably close to a blank canvas. In fact, the 12 bar blues gets reharmonized so frequently that it would be difficult to pin down what the actual \"standard\" chords are. There's definitely a subdominant chordin the 5th bar and a dominant in the 9th - but beyond that, it's anybody's call. As such, the \"Standard Blues\" chords in this article may vary from one example to the next.",
+				Order:        2,
+				TemplateName: "articleParagraph",
+			},
+			domain.ArticleComponent{
+				Body:         "The first technique we'll discuss is demonstrated in Charles Mingus's Nostalgia in Times Square:",
+				Order:        3,
 				TemplateName: "articleParagraph",
 			},
 			domain.ArticleComponent{
 				MusicalExamples: []domain.MusicalExample{
 					domain.MusicalExample{
-						Chords: []string{
-							"IMaj7",
-							"V7",
+						Measures: []domain.Measure{
+							domain.Measure{"I7"},
+							domain.Measure{"IV7"},
+							domain.Measure{"I7"},
+							domain.Measure{""},
 						},
-						DefaultKey:    "C",
-						MeasureNumber: 4,
-						Title:         "Song with a 1 chord and a 4 chord",
+						DefaultKey:    "Eb",
+						MeasureNumber: 1,
+						Title:         "Standard Blues",
+					},
+					domain.MusicalExample{
+						Measures: []domain.Measure{
+							domain.Measure{"I7", "bVII7"},
+							domain.Measure{"I7", "bVII7"},
+							domain.Measure{"I7", "bVII7"},
+							domain.Measure{"I7", "bVII7"},
+						},
+						DefaultKey:    "Eb",
+						MeasureNumber: 1,
+						Title:         "Nostalgia in Times Sq",
 					},
 				},
+				Order:        4,
+				TemplateName: "reharmWidget",
 			},
 		},
 		IsPublished:     false,

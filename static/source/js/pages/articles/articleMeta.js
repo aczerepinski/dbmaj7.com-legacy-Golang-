@@ -4,8 +4,8 @@ import { breakpoints, colors, fonts } from '../../styles'
 import { dateFormatter } from '../../lib/utils'
 
 const Wrapper = styled.div`
-  border-bottom: 1px solid ${colors.hr};
-  border-top: 1px solid ${colors.hr};
+  border-bottom: 1px solid ${colors.borderLight};
+  border-top: 1px solid ${colors.borderLight};
   display: flex;
   margin-bottom: 1rem;
   padding: .2rem;
@@ -35,6 +35,10 @@ const AuthorMeta = styled.div`
     color: ${colors.primaryDark};
     font-weight: 400;
     text-decoration: none;
+    transition: .1s ease-in-out;
+    &:hover{
+      color: ${colors.complementaryDark};
+    }
   }
 `
 

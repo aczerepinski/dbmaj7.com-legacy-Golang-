@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   margin-bottom: 1rem;
    @media (min-width: ${breakpoints.medium}) {
     font-size: 1.2rem;
+    margin-bottom: 1.2rem;
   }
 `
 

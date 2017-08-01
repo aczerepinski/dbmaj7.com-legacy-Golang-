@@ -27,6 +27,10 @@ export const BrandLogo = styled.div`
     color: #fff;
     font-family: ${fonts.fira};
     text-decoration: none;
+    transition: .1s ease-in-out;
+    &:hover{
+      color: ${colors.complementaryDark};
+    }
   }
 `
 
@@ -40,5 +44,9 @@ export const NavLinks = styled.div`
     color: #fff;
     font-family: ${fonts.fira};
     text-decoration: none;
+    transition: .1s ease-in-out;
+    &:hover{
+      color: ${colors.complementaryDark};
+    }
   }
 `

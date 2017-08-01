@@ -3,7 +3,8 @@ export const breakpoints = {
 }
 
 export const colors = {
-  hr: '#bbb',
+  borderLight: '#bbb',
+  complementaryDark: "#f56f00",
   paragraph: '#333',
   paragraphLight: '#888',
   primaryDark: '#09093b'
