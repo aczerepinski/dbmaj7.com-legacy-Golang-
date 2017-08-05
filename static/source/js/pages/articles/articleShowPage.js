@@ -40,7 +40,14 @@ class ArticleShowPage extends Component {
       return <ArticleParagraph {...component} key={component.order}/>
     }
     if (component.templateName === 'reharmWidget') {
-      return <ReharmWidget {...component} key={component.order}/>
+      return (
+      <ReharmWidget
+        {...component}
+        playChord={this.props.playChord}
+        stopChord={this.props.stopChord}
+        key={component.order}
+      />
+      )
     }
   }
 
@@ -56,8 +63,6 @@ class ArticleShowPage extends Component {
     )
   }
 
-
-  
   render() {
     return (
       <div>

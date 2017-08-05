@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { breakpoints, colors, fonts } from '../../styles'
+import ChordUtils from '../../lib/chordUtils'
 
 const Wrapper = styled.div`
   border: 1px solid ${colors.primaryDark};
   border-radius: .15rem;
   max-width: 40rem;
   margin: 0 auto;
-   @media (min-width: ${breakpoints.medium}) {
+  @media (min-width: ${breakpoints.medium}) {
     font-size: 1.2rem;
   }
 `
@@ -24,14 +25,18 @@ const MenuOption = styled.div`
   display: flex;
   flex-basis: 50%;
   font-family: ${fonts.fira};
-  font-size: 1rem;
+  font-size: .8rem;
   font-weight: 400;
   justify-content: center;
   transition: .1s all ease-in-out;
   &:hover {
     color: ${props => props.selected ? '#fff' : colors.complementaryDark};
-    cursor: pointer;
+    cursor: ${props => props.selected ? 'initial' : 'pointer'};
   }
+  @media (min-width: ${breakpoints.medium}) {
+    font-size: 1rem;
+  }
+
 `
 
 MenuOption.defaultProps = {
@@ -47,6 +52,8 @@ const MusicalExample = styled.div`
 const Measure = styled.div`
   border-right: 1px solid ${colors.borderLight};
   flex: 1;
+  height: 100%;
+  position: relative;
   &:last-of-type {
     border-right: none;
   }
@@ -58,7 +65,7 @@ const MeasureNumber = styled.div`
   font-family: ${fonts.fira};
   font-size: .5rem;
   font-weight: 300;
-  position: relative;
+  position: absolute;
   top: .5rem;
 `
 
@@ -66,11 +73,26 @@ const MeasureChords = styled.div`
   color: ${colors.primaryDark};
   display: flex;
   font-family: ${fonts.fira};
+  font-size: .8rem;
   font-weight: 300;
+  height: 100%;
   justify-content: space-around;
+  @media (min-width: ${breakpoints.medium}) {
+    font-size: 1rem;
+  }
 `
 
 const Chord = styled.div`
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  transition: .1s all ease-in-out;
+  width: 100%;
+  &:hover {
+    color: ${colors.complementaryDark};
+  }
 `
 
 class ReharmWidget extends Component {
@@ -93,17 +115,45 @@ class ReharmWidget extends Component {
     this.setState({renderAnalysis: selection})
   }
 
+  playChord(chord) {
+    this.props.playChord(chord)
+  }
+
+  stopChord(chord) {
+    this.props.stopChord(chord)
+  }
+
+  currentKey() {
+    // examples.length is tested in render method
+    return this.props.musicalExamples[this.state.selectedChords].defaultKey
+  }
+
+  chordForAudioContext(chord) {
+    return this.state.renderAnalysis ?
+      ChordUtils.numeralToKey(chord, this.currentKey()) : chord
+  }
+
   renderChords(chords) {
     return chords.map((chord, i) => {
+      const audioChord = this.chordForAudioContext(chord)
       return (
-        <Chord key={i}>{chord}</Chord>
+        <Chord key={i}
+          onMouseDown={this.playChord.bind(this, audioChord)}
+          onMouseUp={this.stopChord.bind(this, audioChord)}
+          onMouseLeave={this.stopChord.bind(this, audioChord)}
+          onTouchStart={this.playChord.bind(this, audioChord)}
+          onTouchEnd={this.stopChord.bind(this, audioChord)}
+          onTouchMove={this.stopChord.bind(this, audioChord)}
+        >
+          {ChordUtils.prettyPrint(chord)}
+        </Chord>
       )
     })
   }
 
   renderExample() {
     const example = this.props.musicalExamples[this.state.selectedChords]
-    const measures = example.chords
+    const measures = this.state.renderAnalysis ? example.chords : ChordUtils.numeralsToKey(example.chords, example.defaultKey)
     return measures.map((measure, i) => {
       return (
         <Measure key={i}>
