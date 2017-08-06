@@ -1,82 +1,125 @@
 package repository
 
 import (
-	"time"
+	"database/sql"
+	"encoding/json"
+	"fmt"
 
 	"github.com/aczerepinski/dbmaj7/domain"
+	"github.com/lib/pq"
 )
 
-type Articles struct{}
+// Articles contains functions for retreiving articles from the database and mapping them to Go structs
+type Articles struct {
+	db *sql.DB
+}
 
-func (a *Articles) GetArticleSummaries() ([]*domain.Article, error) {
+// GetSummaries returns all articles and related authors, excluding article bodies.
+func (a *Articles) GetSummaries() ([]*domain.Article, error) {
 	var articles []*domain.Article
-	threeTricks := domain.Article{
-		Slug:    "three-weird-tricks-to-reharmonize-a-twelve-bar-blues",
-		Summary: "Step up your harmony game with reharmonization techniques utilized by Joe Henderson, Charles Mingus, and Charlie Parker",
-		Title:   "Three Weird Tricks to Reharmonize a 12 Bar Blues",
+
+	all := `SELECT ar.is_published, ar.publication_date, ar.slug, ar.summary, ar.title,
+		au.bio, au.first_name, au.last_name, au.photo_url, au.website
+		FROM articles AS ar
+		JOIN authors AS au
+		ON ar.author_id = au.id`
+
+	rows, err := a.db.Query(all)
+
+	if err != nil {
+		return articles, fmt.Errorf("unable to query database: %v", err)
 	}
-	articles = append(articles, &threeTricks)
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var (
+			isPublished     sql.NullBool
+			publicationDate pq.NullTime
+			slug            sql.NullString
+			summary         sql.NullString
+			title           sql.NullString
+			bio             sql.NullString
+			firstName       sql.NullString
+			lastName        sql.NullString
+			photoURL        sql.NullString
+			website         sql.NullString
+		)
+		if err := rows.Scan(&isPublished, &publicationDate, &slug, &summary, &title, &bio, &firstName, &lastName, &photoURL, &website); err != nil {
+			fmt.Printf("unable to scan row: %v", err)
+			continue
+		}
+		article := domain.Article{
+			Author: domain.Author{
+				Bio:       bio.String,
+				FirstName: firstName.String,
+				LastName:  lastName.String,
+				PhotoURL:  photoURL.String,
+				Website:   website.String,
+			},
+			IsPublished:     isPublished.Bool,
+			PublicationDate: publicationDate.Time,
+			Slug:            slug.String,
+			Summary:         summary.String,
+			Title:           title.String,
+		}
+		articles = append(articles, &article)
+	}
 	return articles, nil
 }
 
-func (a *Articles) GetArticleBySlug(slug string) (*domain.Article, error) {
-	pubDate, _ := time.Parse("Jan 2, 2006", "Jan 29, 2017")
-	article := domain.Article{
-		Author: domain.Author{
-			FirstName: "Adam",
-			LastName:  "Czerepinski",
-			PhotoURL:  "https://www.gravatar.com/avatar/acd5a68afdf05b06e4286d39d502083b?s=100",
-			Website:   "http://www.adamcz.com",
-		},
-		Body: []domain.ArticleComponent{
-			domain.ArticleComponent{
-				Body:         "If you aren't familiar with reharmonization, it essentially means to replace some of the chords in a song. Typically this is done without requiring any changes to the original melody, although small chromatic adjustments aren't unheard of.",
-				Order:        1,
-				TemplateName: "articleParagraph",
-			},
-			domain.ArticleComponent{
-				Body:         "The 12 bar blues is a particularly good vehicle for exploring reharmonization techniques because it's a universally known song form, and reasonably close to a blank canvas. In fact, the 12 bar blues gets reharmonized so frequently that it would be difficult to pin down what the actual \"standard\" chords are. There's definitely a subdominant chordin the 5th bar and a dominant in the 9th - but beyond that, it's anybody's call. As such, the \"Standard Blues\" chords in this article may vary from one example to the next.",
-				Order:        2,
-				TemplateName: "articleParagraph",
-			},
-			domain.ArticleComponent{
-				Body:         "The first technique we'll discuss is demonstrated in Charles Mingus's Nostalgia in Times Square:",
-				Order:        3,
-				TemplateName: "articleParagraph",
-			},
-			domain.ArticleComponent{
-				MusicalExamples: []domain.MusicalExample{
-					domain.MusicalExample{
-						Measures: []domain.Measure{
-							domain.Measure{"I7"},
-							domain.Measure{"IV7"},
-							domain.Measure{"I7"},
-							domain.Measure{""},
-						},
-						DefaultKey:    "Eb",
-						MeasureNumber: 1,
-						Title:         "Standard Blues",
-					},
-					domain.MusicalExample{
-						Measures: []domain.Measure{
-							domain.Measure{"I7", "bVII7"},
-							domain.Measure{"I7", "bVII7"},
-							domain.Measure{"I7", "bVII7"},
-							domain.Measure{"I7", "bVII7"},
-						},
-						DefaultKey:    "Eb",
-						MeasureNumber: 1,
-						Title:         "Nostalgia in Times Sq",
-					},
-				},
-				Order:        4,
-				TemplateName: "reharmWidget",
-			},
-		},
-		IsPublished:     false,
-		PublicationDate: pubDate,
-		Slug:            "three-weird-tricks-to-reharmonize-a-twelve-bar-blues",
-		Title:           "Three Weird Tricks to Reharmonize a 12 Bar Blues",
+// GetBySlug returns a single article
+func (a *Articles) GetBySlug(slug string) (*domain.Article, error) {
+	var article domain.Article
+
+	bySlug := `SELECT ar.body, ar.is_published, ar.publication_date, ar.summary, ar.title,
+		au.bio, au.first_name, au.last_name, au.photo_url, au.website
+		FROM articles AS ar
+		JOIN authors AS au
+		ON ar.author_id = au.id
+		WHERE ar.slug = $1
+		LIMIT 1
+	`
+
+	row := a.db.QueryRow(bySlug, slug)
+
+	var (
+		body            sql.NullString
+		isPublished     sql.NullBool
+		publicationDate pq.NullTime
+		summary         sql.NullString
+		title           sql.NullString
+		bio             sql.NullString
+		firstName       sql.NullString
+		lastName        sql.NullString
+		photoURL        sql.NullString
+		website         sql.NullString
+	)
+
+	if err := row.Scan(&body, &isPublished, &publicationDate, &summary, &title, &bio, &firstName, &lastName, &photoURL, &website); err != nil {
+		return &article, fmt.Errorf("unable to scan row: %v", err)
 	}
+
+	var articleBody []domain.ArticleComponent
+	if err := json.Unmarshal([]byte(body.String), &articleBody); err != nil {
+		return &article, fmt.Errorf("unable to unmarshal article body: %v", err)
+	}
+
+	article = domain.Article{
+		Author: domain.Author{
+			Bio:       bio.String,
+			FirstName: firstName.String,
+			LastName:  lastName.String,
+			PhotoURL:  photoURL.String,
+			Website:   website.String,
+		},
+		Body:            articleBody,
+		IsPublished:     isPublished.Bool,
+		PublicationDate: publicationDate.Time,
+		Slug:            slug,
+		Summary:         summary.String,
+		Title:           title.String,
+	}
+
 	return &article, nil
 }

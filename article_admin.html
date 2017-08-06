@@ -1,0 +1,132 @@
+<html>
+
+<head>
+  <title>db admin</title>
+</head>
+<body>
+  <h1>article admin</h1>
+  <p>this generates json for article.body</p>
+  <div id="forms"></div>
+  <button id="new-paragraph">new paragraph</button>
+  <button id="new-reharm-widget">new reharm widget</button>
+  <button id="marshal">marshal json</button>
+  <div id="results"></div>
+  <style>
+    input {
+      margin-bottom: 10px;
+      width: 80%;
+    }
+    textarea {
+      height: 100px;
+      width: 600px;
+    }
+    #forms {
+      margin-bottom: 20px;
+    }
+  </style>
+</body>
+<script>
+  let componentCount = 0
+  const paragraphButton = document.getElementById('new-paragraph')
+  const reharmButton = document.getElementById('new-reharm-widget')
+  const marshalButton = document.getElementById('marshal')
+  const formDiv = document.getElementById('forms')
+  const resultDiv = document.getElementById('results')
+
+  const addParagraphForm = () => {
+    const order = ++componentCount
+    const wrapper = document.createElement('div')
+    const h3 = document.createElement('h3')
+    h3.innerHTML = `component ${order}: paragraph`
+    const form = document.createElement('form')
+    form.dataset.componentType = 'paragraph'
+    form.dataset.order = order
+    const bodyInput = document.createElement('textarea')
+    bodyInput.name = 'body'
+    bodyInput.placeholder = 'paragraph body'
+    form.appendChild(bodyInput)
+    wrapper.appendChild(h3)
+    wrapper.appendChild(form)
+    formDiv.appendChild(wrapper)
+  }
+
+  const addReharmForm = () => {
+    const order = ++componentCount
+    const wrapper = document.createElement('div')
+    const h3 = document.createElement('h3')
+    h3.innerHTML = `component ${order}: reharm widget`
+    const form = document.createElement('form')
+    form.dataset.componentType = 'reharm'
+    form.dataset.order = order
+
+    const inputs = [
+      {tag: 'input', name: 'example-1-title', placeholder: 'example 1 title'},
+      {tag: 'input', name: 'example-1-key', placeholder: 'example 1 key'},
+      {tag: 'input', name: 'example-1-starting-measure', placeholder: 'example 1 starting-measure'},
+      {tag: 'input', name: 'example-1-chords', placeholder: 'example 1 chords (format: [["IMaj7", "V7"]]'},
+      {tag: 'input', name: 'example-2-title', placeholder: 'example 2 title'},
+      {tag: 'input', name: 'example-2-key', placeholder: 'example 2 key'},
+      {tag: 'input', name: 'example-2-starting-measure', placeholder: 'example 2 starting-measure'},
+      {tag: 'input', name: 'example-2-chords', placeholder: 'example 2 chords'}
+    ]
+
+    inputs.map((input) => {
+      const el = document.createElement(input.tag)
+      el.name = input.name
+      el.placeholder = input.placeholder
+      form.appendChild(el)
+    })
+
+    wrapper.appendChild(h3)
+    wrapper.appendChild(form)
+    formDiv.appendChild(wrapper)
+  }
+
+  const marshalJSON = () => {
+    const js = [];
+    [...document.querySelectorAll('form')].map((form) => {
+      if (form.dataset.componentType === 'paragraph') {
+        js.push(handleParagraph(form))
+      } else if (form.dataset.componentType === 'reharm') {
+        js.push(handleReharm(form))
+      }
+    })
+    resultDiv.innerHTML = JSON.stringify(js).replace(/'/g, "''")
+  }
+
+  const handleParagraph = (form) => {
+    return {
+      body: form.querySelector('[name="body"]').value,
+      order: parseInt(form.dataset.order),
+      templateName: 'articleParagraph'
+    }
+  }
+
+  const handleReharm = (form) => {
+    return {
+      musicalExamples: [
+        {
+          chords: eval(form.querySelector('[name="example-1-chords"]').value),
+          defaultKey: form.querySelector('[name="example-1-key"]').value,
+          measureNumber: parseInt(form.querySelector('[name="example-1-starting-measure"]').value),
+          title: form.querySelector('[name="example-1-title"]').value
+        },
+        {
+          chords: eval(form.querySelector('[name="example-2-chords"]').value),
+          defaultKey: form.querySelector('[name="example-2-key"]').value,
+          measureNumber: parseInt(form.querySelector('[name="example-2-starting-measure"]').value),
+          title: form.querySelector('[name="example-2-title"]').value
+        }
+      ],
+      order: parseInt(form.dataset.order),
+      templateName: 'reharmWidget'
+    }
+  }
+
+  paragraphButton.addEventListener('click', addParagraphForm)
+  reharmButton.addEventListener('click', addReharmForm)
+  marshalButton.addEventListener('click', marshalJSON)
+
+
+</script>
+</html>

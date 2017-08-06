@@ -19,3 +19,12 @@ The backend (everything except `/static` and `/node_modules`) is written in Go (
 - controllers (i.e. `/api/controller`) handle http concerns (request/response, cookies, etc)
 - services (i.e. `/api/service`) sit in-between a controller and repository, and are a placeholder for business logic
 - repositories (i.e. `/repository/article`) query the database and marshal results to Go structs
+
+## Database
+PostgreSQL 9.4+
+```
+pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+createdb dbmaj7
+psql dbmaj7 < ./db/migrate_article_schema.sql
+psql dbmaj7 < ./db/seed_blues_reharm.sql
+```

@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   border: 1px solid ${colors.primaryDark};
   border-radius: .15rem;
   max-width: 40rem;
-  margin: 0 auto;
+  margin: 0 auto 1.2rem;
   @media (min-width: ${breakpoints.medium}) {
     font-size: 1.2rem;
   }
