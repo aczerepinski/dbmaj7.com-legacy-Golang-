@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import API from '../../lib/api'
 import { PageLayout, PageTitle } from '../../shared/pageLayout'
 import ArticleMeta from './articleMeta'
-import ArticleParagraph from './articleParagraph'
+import ArticleMarkdown from './articleMarkdown'
 import ReharmWidget from './reharmWidget'
 
 class ArticleShowPage extends Component {
@@ -36,8 +36,8 @@ class ArticleShowPage extends Component {
   }
 
   componentDispatcher(component) {
-    if (component.templateName === 'articleParagraph') {
-      return <ArticleParagraph {...component} key={component.order}/>
+    if (component.templateName === 'markdown') {
+      return <ArticleMarkdown {...component} key={component.order}/>
     }
     if (component.templateName === 'reharmWidget') {
       return (

@@ -1,13 +1,13 @@
 <html>
 
 <head>
-  <title>db admin</title>
+  <title>dbmaj7 admin</title>
 </head>
 <body>
   <h1>article admin</h1>
   <p>this generates json for article.body</p>
   <div id="forms"></div>
-  <button id="new-paragraph">new paragraph</button>
+  <button id="new-markdown">new markdown</button>
   <button id="new-reharm-widget">new reharm widget</button>
   <button id="marshal">marshal json</button>
   <div id="results"></div>
@@ -27,23 +27,23 @@
 </body>
 <script>
   let componentCount = 0
-  const paragraphButton = document.getElementById('new-paragraph')
+  const markdownButton = document.getElementById('new-markdown')
   const reharmButton = document.getElementById('new-reharm-widget')
   const marshalButton = document.getElementById('marshal')
   const formDiv = document.getElementById('forms')
   const resultDiv = document.getElementById('results')
 
-  const addParagraphForm = () => {
+  const addMarkdownForm = () => {
     const order = ++componentCount
     const wrapper = document.createElement('div')
     const h3 = document.createElement('h3')
-    h3.innerHTML = `component ${order}: paragraph`
+    h3.innerHTML = `component ${order}: markdown`
     const form = document.createElement('form')
-    form.dataset.componentType = 'paragraph'
+    form.dataset.componentType = 'markdown'
     form.dataset.order = order
     const bodyInput = document.createElement('textarea')
     bodyInput.name = 'body'
-    bodyInput.placeholder = 'paragraph body'
+    bodyInput.placeholder = 'markdown body'
     form.appendChild(bodyInput)
     wrapper.appendChild(h3)
     wrapper.appendChild(form)
@@ -85,8 +85,8 @@
   const marshalJSON = () => {
     const js = [];
     [...document.querySelectorAll('form')].map((form) => {
-      if (form.dataset.componentType === 'paragraph') {
-        js.push(handleParagraph(form))
+      if (form.dataset.componentType === 'markdown') {
+        js.push(handleMarkdown(form))
       } else if (form.dataset.componentType === 'reharm') {
         js.push(handleReharm(form))
       }
@@ -94,11 +94,11 @@
     resultDiv.innerHTML = JSON.stringify(js).replace(/'/g, "''")
   }
 
-  const handleParagraph = (form) => {
+  const handleMarkdown = (form) => {
     return {
       body: form.querySelector('[name="body"]').value,
       order: parseInt(form.dataset.order),
-      templateName: 'articleParagraph'
+      templateName: 'markdown'
     }
   }
 
@@ -123,7 +123,7 @@
     }
   }
 
-  paragraphButton.addEventListener('click', addParagraphForm)
+  markdownButton.addEventListener('click', addMarkdownForm)
   reharmButton.addEventListener('click', addReharmForm)
   marshalButton.addEventListener('click', marshalJSON)
 

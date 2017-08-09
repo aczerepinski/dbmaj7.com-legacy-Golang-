@@ -70,6 +70,9 @@ const numeralToKey = (numeral, key) => {
 }
 
 const numeralsToKey = (chordArray, targetKey) => {
+  if (typeof chordArray === 'undefined' || !chordArray) {
+    return ''
+  }
   return chordArray.map((measure) => {
     return measure.map((chord) => {
       return numeralToKey(chord, targetKey)

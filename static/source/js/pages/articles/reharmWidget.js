@@ -135,6 +135,7 @@ class ReharmWidget extends Component {
 
   renderChords(chords) {
     return chords.map((chord, i) => {
+
       const audioChord = this.chordForAudioContext(chord)
       return (
         <Chord key={i}
@@ -165,7 +166,7 @@ class ReharmWidget extends Component {
   }
 
   render() {
-    if (this.props.musicalExamples.length < 2) {
+    if (!this.props.musicalExamples || this.props.musicalExamples.length < 2) {
       return null;
     }
     const a = this.props.musicalExamples[0]
