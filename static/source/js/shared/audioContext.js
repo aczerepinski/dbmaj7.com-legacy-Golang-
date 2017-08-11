@@ -6,8 +6,8 @@ class AudioContext extends Component {
     super(props)
   }
 
-  componentWillMount() {
-    this.context = this.newContext()
+  componentDidMount() {
+    this.ctx = this.newContext()
     this.oscillators = {}
     this.gainNodes = {}
     this.exceptions = 0;
@@ -37,14 +37,14 @@ class AudioContext extends Component {
   }
 
   playFrequency(frequency) {
-    const oscillator = this.context.createOscillator()
-    const gainNode = this.context.createGain()
-    gainNode.gain.setValueAtTime(.0001, this.context.currentTime)
+    const oscillator = this.ctx.createOscillator()
+    const gainNode = this.ctx.createGain()
+    gainNode.gain.setValueAtTime(.0001, this.ctx.currentTime)
     oscillator.connect(gainNode)
-    gainNode.connect(this.context.destination)
+    gainNode.connect(this.ctx.destination)
     oscillator.frequency.value = frequency
     oscillator.start()
-    gainNode.gain.exponentialRampToValueAtTime(1.0, this.context.currentTime + .025);
+    gainNode.gain.exponentialRampToValueAtTime(1.0, this.ctx.currentTime + .025);
     this.oscillators[frequency] = oscillator
     this.gainNodes[frequency] = gainNode
   }
@@ -52,7 +52,7 @@ class AudioContext extends Component {
   stopFrequency(frequency) {
     if (this.gainNodes[frequency]) {
       this.gainNodes[frequency].gain.setTargetAtTime(
-        0, this.context.currentTime, 0.025
+        0, this.ctx.currentTime, 0.025
       )
     }
   }
