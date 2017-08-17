@@ -10,7 +10,9 @@ import Navbar from './shared/navbar/navbar'
 
 import ArticleIndexPage from './pages/articles/articleIndexPage'
 import ArticleShowPage from './pages/articles/articleShowPage'
+import ResourceIndexPage from './pages/resources/resourceIndexPage'
 import AudioContext from './shared/audioContext'
+import Piano from './pages/resources/piano/piano'
 
 const AppLayout = (appProps) => (
   <div>
@@ -26,6 +28,17 @@ const AppLayout = (appProps) => (
       />
     )}
     />
+  <Route exact path="/resources" component={ResourceIndexPage}/>
+  <Route path="/resources/piano" render={(routerProps) => (
+    <Piano
+        playChord={appProps.playChord}
+        stopChord={appProps.stopChord}
+        playFrequency={appProps.playFrequency}
+        stopFrequency={appProps.stopFrequency}
+        {...routerProps}
+    />
+  )}
+  />
   </div>
 )
 

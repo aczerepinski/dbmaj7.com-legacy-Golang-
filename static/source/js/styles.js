@@ -1,5 +1,6 @@
 export const breakpoints = {
-  medium: '768px'
+  medium: '768px',
+  mobileLandscape: '500px'
 }
 
 export const colors = {
@@ -12,4 +13,9 @@ export const colors = {
 
 export const fonts = {
   fira: '\'Fira Sans\', sans-serif'
+}
+
+export const zIndices = {
+  mid: '5',
+  top: '10'
 }
