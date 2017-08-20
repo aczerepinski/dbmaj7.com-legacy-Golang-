@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { PageLayout, PageTitle } from '../../../shared/pageLayout'
 import styled from 'styled-components'
-import { breakpoints, colors, fonts, zIndices } from '../../../styles'
+import { breakpoints, colors, fonts, shadows, zIndices } from '../../../styles'
 import PianoSettingsConsole from './pianoSettingsConsole'
 import PianoKeyboard from './pianoKeyboard'
 import chordUtils from '../../../lib/chordUtils'
@@ -27,11 +27,12 @@ const MobileRotateNag = styled.div`
 `
 
 const PianoWrapper = styled.div`
-  border: 1px solid ${colors.primaryDark};
-  border-radius: .15rem;
+  border-radius: 6px;
+  box-shadow: ${shadows.medium};
   max-width: 50rem;
-  margin-top: 5rem;
+  margin: 2rem auto;
   min-height: 20rem;
+  overflow: hidden;
 `
 
 class Piano extends Component {
@@ -137,7 +138,10 @@ class Piano extends Component {
           Please rotate your phone for the awesome
         </MobileRotateNag>
         <PianoWrapper>
-          <PianoSettingsConsole/>
+          <PianoSettingsConsole
+            selectedKey={this.state.selectedKey}
+            setSelectedKey={this.setSelectedKey}
+          />
           <PianoKeyboard
             activeKeys={this.state.activeKeys}
             baseKeyboardOctave={this.state.baseKeyboardOctave}

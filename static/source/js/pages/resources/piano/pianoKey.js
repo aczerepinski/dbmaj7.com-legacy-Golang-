@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import { breakpoints, colors, fonts, zIndices } from '../../../styles'
 
 const BlackKey = styled.div`
-  background-color: ${props => props.isPlaying ? colors.complementaryDark : props.isSelected ? '#aaa' : colors.primaryDark};
+  background-color: ${props => props.isPlaying ? colors.complementaryDark : props.isSelected ? '#a1a3aa' : colors.primaryDark};
   border: 1px solid ${colors.primaryDark};
   border-radius: 0 0 2px 2px;
   border-top: 0;
+  cursor: pointer;
   flex: 2;
   height: 66%;
   transition: .1s all ease-in-out;
@@ -15,8 +16,9 @@ const BlackKey = styled.div`
 `
 
 const WhiteKey = styled.div`
-  background-color: ${props => props.isPlaying ? colors.complementaryDark : props.isSelected ? '#aaa' : '#fff'};
+  background-color: ${props => props.isPlaying ? colors.complementaryDark : props.isSelected ? '#a1a3aa' : '#fff'};
   border-left: 1px solid ${colors.primaryDark};
+  cursor: pointer;
   flex: 3;
   height: 100%;
   margin-left: ${props => ['a', 'b', 'd', 'e', 'g'].indexOf(props.letter.toLowerCase()) >= 0 ? '-2.36%' : 'initial'};

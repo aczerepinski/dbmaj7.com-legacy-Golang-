@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { breakpoints, colors, fonts } from '../../styles'
+import { breakpoints, colors, fonts, shadows } from '../../styles'
 import ChordUtils from '../../lib/chordUtils'
 
 const Wrapper = styled.div`
-  border: 1px solid ${colors.primaryDark};
-  border-radius: .15rem;
+  border-radius: 3px;
+  box-shadow: ${shadows.medium};
   max-width: 40rem;
   margin: 0 auto 1.2rem;
+  overflow: hidden;
   @media (min-width: ${breakpoints.medium}) {
     font-size: 1.2rem;
   }
