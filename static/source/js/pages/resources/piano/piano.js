@@ -139,8 +139,18 @@ class Piano extends Component {
         </MobileRotateNag>
         <PianoWrapper>
           <PianoSettingsConsole
+            baseKeyboardOctave={this.state.baseKeyboardOctave}
+            displayMode={this.state.displayMode}
+            playCurrentSelection={this.playCurrentSelection}
+            selectedChord={this.state.selectedChord}
+            selectedDisplayMode={this.state.displayMode}
             selectedKey={this.state.selectedKey}
+            selectedScale={this.state.selectedScale}
+            setBaseKeyboardOctave={this.setBaseKeyboardOctave}
+            setSelectedChord={this.setSelectedChord}
+            setSelectedDisplayMode={this.setSelectedDisplayMode}
             setSelectedKey={this.setSelectedKey}
+            setSelectedScale={this.setSelectedScale}
           />
           <PianoKeyboard
             activeKeys={this.state.activeKeys}
