@@ -1,6 +1,8 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/aczerepinski/dbmaj7/domain"
 	"github.com/aczerepinski/dbmaj7/repository"
 )
@@ -12,6 +14,7 @@ type Service struct {
 
 // NewService returns an initialized Service
 func NewService(articles repository.Articles) Service {
+	fmt.Println("initializing service")
 	return Service{
 		Articles: articles,
 	}

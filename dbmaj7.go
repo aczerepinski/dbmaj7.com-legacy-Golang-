@@ -4,15 +4,23 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/aczerepinski/dbmaj7/api"
 	"github.com/aczerepinski/dbmaj7/repository"
 )
 
 func main() {
-	fmt.Println("in main")
-	defaultPostgresURI := "postgresql://localhost:5432/dbmaj7?sslmode=disable"
-	repo, err := repository.New(defaultPostgresURI)
+	fmt.Println("parsing environment variables")
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL == "" {
+		databaseURL = "postgresql://localhost:5432/dbmaj7?sslmode=disable"
+	}
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	repo, err := repository.New(databaseURL)
 	if err != nil {
 		log.Fatal("could not initialize database", err)
 	}
@@ -23,7 +31,8 @@ func main() {
 	http.HandleFunc("/api/articles", apiController.ArticleIndex)
 	http.HandleFunc("/static/", staticHandler)
 	http.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":8080", nil)
+	fmt.Printf("initializing server on port %v", port)
+	http.ListenAndServe(":"+port, nil)
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {

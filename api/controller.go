@@ -13,6 +13,7 @@ type Controller struct {
 
 // NewController returns an initialized Controller
 func NewController(service *Service) *Controller {
+	fmt.Println("initializing controller")
 	return &Controller{
 		Service: service,
 	}
