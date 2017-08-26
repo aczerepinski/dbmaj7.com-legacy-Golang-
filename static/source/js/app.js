@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom'
 
 import Navbar from './shared/navbar/navbar'
 
+import AboutPage from './pages/aboutPage'
 import ArticleIndexPage from './pages/articles/articleIndexPage'
 import ArticleShowPage from './pages/articles/articleShowPage'
 import ResourceIndexPage from './pages/resources/resourceIndexPage'
@@ -17,6 +18,7 @@ import Piano from './pages/resources/piano/piano'
 const AppLayout = (appProps) => (
   <div>
     <Navbar/>
+    <Route exact path="/" component={AboutPage}/>
     <Route exact path="/articles" component={ArticleIndexPage}/>
     <Route path="/articles/:slug" render={(routerProps) => (
       <ArticleShowPage

@@ -15,4 +15,10 @@ describe('toHTML', () => {
     const input ='abcdefg [hijklmnop](www.qrstuv.com) wxyz'
     expect(markdown.toHTML(input)).toBe('<p>abcdefg <a href="www.qrstuv.com">hijklmnop</a> wxyz</p>')
   })
+
+  test('converts two markdown links to two anchord tags', () => {
+    const input = 'click [this](/link1) or [this](/link2)'
+    const expected = '<p>click <a href="/link1">this</a> or <a href="/link2">this</a></p>'
+    expect(markdown.toHTML(input)).toBe(expected)
+  })
 })

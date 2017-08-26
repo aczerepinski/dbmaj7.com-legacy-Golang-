@@ -16,6 +16,15 @@ const Wrapper = styled.div`
       margin-bottom: 1.2rem;
     }
   }
+  a {
+    color: ${colors.primaryDark};
+    border-bottom: 1px solid ${colors.complementaryDark};
+    text-decoration: none;
+    transition: .1s all ease-in-out;
+    &:hover {
+      color: ${colors.complementaryDark};
+    }
+  }
 `
 
 class ArticleMarkdown extends Component {
