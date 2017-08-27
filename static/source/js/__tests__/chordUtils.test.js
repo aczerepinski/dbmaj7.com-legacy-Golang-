@@ -65,3 +65,13 @@ describe('scaleToNotes', () => {
     expect(ChordUtils.scaleToNotes("C", "Ionian")).toEqual(cIonian)
   })
 })
+
+describe('prettyPrint', () => {
+  test('replaces b with ♭ in chord symbols', () => {
+    expect(ChordUtils.prettyPrint('DbMaj7')).toEqual('D♭Maj7')
+  })
+
+  test('does not replace b in sub', () => {
+    expect(ChordUtils.prettyPrint('subV7/II')).toEqual('subV7/II')
+  })
+})

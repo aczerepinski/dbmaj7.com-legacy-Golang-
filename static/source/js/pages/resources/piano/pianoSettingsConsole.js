@@ -253,7 +253,7 @@ class PianoSettingsConsole extends Component {
           <ConsoleColumn>
             <Label>Current Selection:</Label>
             <BrightLabel>
-            {ChordUtils.prettyPrint(this.props.selectedKey)} {this.selectedSuffix()}
+            {ChordUtils.prettyPrint(this.props.selectedKey)} {ChordUtils.prettyPrint(this.selectedSuffix())}
             </BrightLabel>
             <PlayButton
               onClick={() => this.props.playCurrentSelection()}

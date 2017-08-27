@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "<aczerepinski@gmail.com>",
-  "license": "MIT",
+  "license": "none",
   "scripts": {
     "test": "jest",
     "postinstall": "webpack -p --config ./webpack.config.js"

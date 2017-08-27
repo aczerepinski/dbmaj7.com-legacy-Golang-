@@ -81,6 +81,11 @@ const numeralsToKey = (chordArray, targetKey) => {
 }
 
 const prettyPrint = (chordSymbol) => {
+  // javascript doesn't support (?<!su)b lookbehinds so just
+  // bail if chord contains 'sub'
+  if (chordSymbol.indexOf('sub') > -1) {
+    return chordSymbol
+  }
   return chordSymbol.replace('b', '♭').replace('#', '♯')
 }
 

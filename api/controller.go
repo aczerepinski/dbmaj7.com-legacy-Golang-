@@ -21,9 +21,7 @@ func NewController(service *Service) *Controller {
 
 // ArticleShow returns a single article (identified by slug)
 func (c *Controller) ArticleShow(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("path", r.URL.Path)
 	slug := r.URL.Path[len("/api/articles/"):]
-	fmt.Println("slug: ", slug)
 	article, err := c.Service.GetArticleBySlug(slug)
 	if err != nil {
 		fmt.Printf("error from article service: %v", err)
