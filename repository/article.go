@@ -11,7 +11,8 @@ import (
 
 // Articles contains functions for retreiving articles from the database and mapping them to Go structs
 type Articles struct {
-	db *sql.DB
+	db    *sql.DB
+	cache *cache
 }
 
 // GetSummaries returns all articles and related authors, excluding article bodies.
@@ -70,6 +71,11 @@ func (a *Articles) GetSummaries() ([]*domain.Article, error) {
 
 // GetBySlug returns a single article
 func (a *Articles) GetBySlug(slug string) (*domain.Article, error) {
+	cached, err := a.cache.getArticleBySlug(slug)
+	if err == nil {
+		return cached, nil
+	}
+
 	var article domain.Article
 
 	bySlug := `SELECT ar.body, ar.is_published, ar.publication_date, ar.summary, ar.title,
@@ -121,5 +127,6 @@ func (a *Articles) GetBySlug(slug string) (*domain.Article, error) {
 		Title:           title.String,
 	}
 
+	a.cache.saveArticle(article)
 	return &article, nil
 }
