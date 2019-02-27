@@ -14,7 +14,7 @@ type Repository struct {
 }
 
 // New opens a database connection and returns a repository
-func New(uri string) (*Repository, error) {
+func New(uri string, cacheTTL int) (*Repository, error) {
 	fmt.Println("initializing database connection")
 	var (
 		db  *sql.DB
@@ -24,11 +24,11 @@ func New(uri string) (*Repository, error) {
 		return nil, fmt.Errorf("unable to establish connection: %v", err)
 	}
 	if err := db.Ping(); err != nil {
-		return nil, fmt.Errorf("could not ping databasego get github.com/lib/pq, %v", err)
+		return nil, fmt.Errorf("could not ping database, %v", err)
 	}
 	repo := Repository{
 		db:       db,
-		Articles: Articles{db},
+		Articles: Articles{db, newCache(cacheTTL)},
 	}
 	return &repo, nil
 }
